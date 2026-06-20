@@ -19,9 +19,9 @@ router.get('/:id', (req,res)=> {
     }
 })  
 
-router.post('/',(_req,res)=> {
-    res.send('Saving a diary!');
-});
+// router.post('/',(_req,res)=> {
+//     res.send('Saving a diary!');
+// });
 
 router.post('/',(req,res)=> {
     try {
