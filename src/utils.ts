@@ -1,16 +1,23 @@
 
-import { NewDiaryEntry, VisibilityValues, type Visibility, Weather } from "./types/types.ts";
-
+// import { NewDiaryEntry, VisibilityValues, type Visibility, Weather } from "./types.ts";
+import { type NewDiaryEntry, VisibilityValues, type Visibility,  Weather } from "./types.ts";
 const parseNewDiaryEntry = (object : unknown): NewDiaryEntry => {
     console.log(object);
-    const newEntry : NewDiaryEntry = {
-        weather : 'cloudy',
-        visibility : 'good',
-        date : '2026-3-4',
-        comment : 'fake news'
-    };
 
-    return newEntry;
+    if(!object || typeof object !== 'object'){
+        throw new Error('Incorrect or missing data');
+    }
+   
+    if('comment' in object && 'date' in object && 'weather' in object && 'visibility' in object){
+        const newEntry : NewDiaryEntry = {
+        comment : parseComment(object.comment),
+        date : parseDate(object.date),
+        weather : parseWeather(object.weather),
+        visibility : parseVisibility(object.visibility)
+    };
+        return newEntry;
+    }
+    throw new Error('Incorrect data, some fields are missing');
 }
 
 export const parseComment = (comment : unknown) : string=> {
@@ -37,7 +44,7 @@ const isDate = (date : string) : boolean => {
 }
 
 const parseWeather = (weather : unknown) : Weather => {
-    if(!weather || !isString(weather) || !isWeather(weather)){
+    if(!isString(weather) || !isWeather(weather)){
         throw new Error(`Incorrect or missing weather ${weather}`);
     }
     return weather;
@@ -52,7 +59,7 @@ const isVisibility = (param : string) : param is Visibility=> {
 }
 
 const parseVisibility = (visibility : unknown) : Visibility => {
-    if (!visibility || !isString(visibility) || !isVisibility(visibility)){
+    if ( !isString(visibility) || !isVisibility(visibility)){
         throw new Error(`Incorrect or missing visibility ${visibility}`)
     }
     return visibility;

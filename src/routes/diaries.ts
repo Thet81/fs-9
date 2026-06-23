@@ -1,5 +1,5 @@
 import express, {type Response} from 'express'
-import type { NonSensitiveDiaryEntry } from '../types/types.ts';
+import type { NonSensitiveDiaryEntry } from '../types.ts';
 import diaryService from '../services/diaryService.ts';
 import parseNewDiaryEntry from '../utils.ts';
 

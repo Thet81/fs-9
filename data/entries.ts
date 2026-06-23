@@ -1,5 +1,5 @@
 
-import type { DiaryEntry } from "../src/types/types";
+import type { DiaryEntry } from "../src/types";
 
 const diaryEntries : DiaryEntry[] = [
     {

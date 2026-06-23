@@ -1,7 +1,7 @@
 
 // import diaryData from '../../data/entries.json' with {type : "json"};
 import diaries from '../../data/entries.ts';
-import type { NewDiaryEntry,NonSensitiveDiaryEntry,DiaryEntry } from '../types/types';
+import type { NewDiaryEntry,NonSensitiveDiaryEntry,DiaryEntry } from '../types.ts';
 
 // const diaries : DiaryEntry[] = diaryData as DiaryEntry[];
 
