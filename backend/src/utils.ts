@@ -15,8 +15,8 @@ const parseNewDiaryEntry = (object : unknown): NewDiaryEntry => {
         // comment : parseComment(object.comment),
         comment : z.string().parse(object.comment),
         date : z.iso.date().parse(object.date),
-        weather : parseWeather(object.weather),
-        visibility : parseVisibility(object.visibility)
+        weather : z.enum(Weather).parse(object.weather),
+        visibility : z.enum(VisibilityValues).parse(object.visibility)
     };
         return newEntry;
     }
