@@ -1,5 +1,5 @@
 
-import { newEntrySchema } from "./utils";
+import { newEntrySchema } from "./utils.ts";
 import z from "zod";
 
 export const Weather = {

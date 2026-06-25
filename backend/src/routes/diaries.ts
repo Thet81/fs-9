@@ -1,8 +1,7 @@
-import express, {type Response} from 'express'
-import type { NonSensitiveDiaryEntry } from '../types.ts';
+import express, {type Response, type Request} from 'express'
+import type { DiaryEntry, NewDiaryEntry, NonSensitiveDiaryEntry } from '../types.ts';
 import diaryService from '../services/diaryService.ts';
-import parseNewDiaryEntry from '../utils.ts';
-import z from 'zod';
+import middleware from '../middlewares/middleware.ts';
 
 const router = express.Router();
 
@@ -24,18 +23,23 @@ router.get('/:id', (req,res)=> {
 //     res.send('Saving a diary!');
 // });
 
-router.post('/',(req,res)=> {
-    try {
-        const newDiaryEntry = parseNewDiaryEntry(req.body);
-        const addedEntry = diaryService.addDiary(newDiaryEntry);
-        res.json(addedEntry);
-    }catch(error : unknown){
-        if(error instanceof z.ZodError){
-            res.status(400).send({error : error.issues})
-        }else {
-            res.status(400).send({error : 'unknown error'})
-        }
-    }
-});
+// router.post('/',(req,res)=> {
+//     try {
+//         const newDiaryEntry = newEntrySchema.parse(req.body);
+//         const addedEntry = diaryService.addDiary(newDiaryEntry);
+//         res.json(addedEntry);
+//     }catch(error : unknown){
+//         if(error instanceof z.ZodError){
+//             res.status(400).send({error : error.issues})
+//         }else {
+//             res.status(400).send({error : 'unknown error'})
+//         }
+//     }
+// });
 
+router.post('/',middleware.newDiaryParser,(req : Request<unknown, unknown, NewDiaryEntry>, res : Response<DiaryEntry>)=> {
+    const addedEntry = diaryService.addDiary(req.body);
+    res.json(addedEntry);
+})
+router.use(middleware.errorMiddleWare)
 export default router;
