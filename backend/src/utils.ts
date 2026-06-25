@@ -1,27 +1,27 @@
 
 // import { NewDiaryEntry, VisibilityValues, type Visibility, Weather } from "./types.ts";
 import { type NewDiaryEntry, VisibilityValues, type Visibility,  Weather } from "./types.ts";
-import {z} from 'zod';
+import { z} from 'zod';
 
-const parseNewDiaryEntry = (object : unknown): NewDiaryEntry => {
-    console.log(object);
+// const parseNewDiaryEntry = (object : unknown): NewDiaryEntry => {
+//     console.log(object);
 
-    if(!object || typeof object !== 'object'){
-        throw new Error('Incorrect or missing data');
-    }
+//     if(!object || typeof object !== 'object'){
+//         throw new Error('Incorrect or missing data');
+//     }
    
-    if('comment' in object && 'date' in object && 'weather' in object && 'visibility' in object){
-        const newEntry : NewDiaryEntry = {
-        // comment : parseComment(object.comment),
-        comment : z.string().parse(object.comment),
-        date : z.iso.date().parse(object.date),
-        weather : z.enum(Weather).parse(object.weather),
-        visibility : z.enum(VisibilityValues).parse(object.visibility)
-    };
-        return newEntry;
-    }
-    throw new Error('Incorrect data, some fields are missing');
-}
+//     if('comment' in object && 'date' in object && 'weather' in object && 'visibility' in object){
+//         const newEntry : NewDiaryEntry = {
+//         // comment : parseComment(object.comment),
+//         comment : z.string().parse(object.comment),
+//         date : z.iso.date().parse(object.date),
+//         weather : z.enum(Weather).parse(object.weather),
+//         visibility : z.enum(VisibilityValues).parse(object.visibility)
+//     };
+//         return newEntry;
+//     }
+//     throw new Error('Incorrect data, some fields are missing');
+// }
 
 export const parseComment = (comment : unknown) : string=> {
     if(!comment || !isString(comment)){
@@ -67,4 +67,17 @@ const parseVisibility = (visibility : unknown) : Visibility => {
     }
     return visibility;
 }
+
+export const newEntrySchema = z.object({
+    weather : z.enum(Weather),
+    visibility : z.enum(VisibilityValues),
+    date : z.iso.date(),
+    comment : z.string().optional(),
+})
+
+
+const parseNewDiaryEntry = (object : unknown) : NewDiaryEntry => {
+    return newEntrySchema.parse(object);
+}
+
 export default parseNewDiaryEntry; 
